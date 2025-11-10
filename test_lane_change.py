@@ -46,7 +46,7 @@ class Car:
         self.width=40
         self.length=20
         self.color=color
-        self.safe_distance = 60 # min gap between cars
+        self.safe_distance = 75 # min gap between cars
 
     def move(self,lights,cars,all_cars):
         can_move=True
@@ -170,22 +170,22 @@ class Car:
         pygame.draw.rect(screen, BLUE, (self.x, self.y, 40, 20))
     def draw_ver(self,screen):
         pygame.draw.rect(screen, BLUE, (self.x, self.y, 20, 40))
-    def coll_hor_ver(self ):
-        a=pygame.draw.rect(screen, GREEN, (self.x+30, self.y+10, 30, 1))
-        car_coll.append(a)
-    def coll_hor_ver1(self):
-        b=pygame.draw.rect(screen, GREEN, (self.x-30, self.y+20, 30, 1))
-        car_coll1.append(b)
+    def draw_coll(self):
+        a=pygame.Rect(self.x-10, self.y-10, 60, 40)
+        
+        for hitbox in cars:
+            pygame.draw.rect(screen, GREEN, a)
+    def draw_coll_ver(self):
+        b=pygame.Rect(self.x-10, self.y-10, 40, 60)
+        for car in cars_ver:
+          pygame.draw.rect(screen, GREEN, b)
     def check_coll(self):
-        for coll in car_coll:
-            for coll1 in car_coll1:
-             if coll.colliderect(coll1):
-                for car in cars:
-                    self.x-=self.speed
-                    break
-                else:
-                    self.x+=self.speed
-         
+        a=pygame.Rect(self.x-10, self.y-10, 60, 40)
+        b=pygame.Rect(self.x-10, self.y-10, 40, 60)
+        if a.colliderect(b):
+            print("ok")
+
+        
 
 light1 = TrafficLight(150, 270)
 light2=TrafficLight(500, 270)
@@ -275,6 +275,10 @@ while run:
 
     for light in lights:
         light.draw(screen)
+    for car in cars :
+        car.draw_coll()
+    for car in cars_ver:
+        car.draw_coll_ver()
     for car in cars:
         car.draw(screen)
     for car in cars_ver:
@@ -283,12 +287,10 @@ while run:
         car.draw(screen)
     for car in car_ver_up:
         car.draw_ver(screen)
-    for car in cars:
-        car.coll_hor_ver()
-    for car in cars_ver:
-        car.coll_hor_ver1()
-    for car in cars:
+    for car in cars and cars_ver:
         car.check_coll()
+        break
+  
     
 
     
