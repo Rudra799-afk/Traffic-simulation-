@@ -179,12 +179,12 @@ class Car:
         b=pygame.Rect(self.x-10, self.y-10, 40, 60)
         for car in cars_ver:
           pygame.draw.rect(screen, GREEN, b)
-    def check_coll(self):
+    def check_coll(self,car_verr):
         a=pygame.Rect(self.x-10, self.y-10, 60, 40)
-        b=pygame.Rect(self.x-10, self.y-10, 40, 60)
-        if a.colliderect(b):
+        for car in car_verr:
+          b = pygame.Rect(car.x, car.y, 20, 40)  # vertical car hitbox
+          if a.colliderect(b):
             print("ok")
-
         
 
 light1 = TrafficLight(150, 270)
@@ -287,9 +287,9 @@ while run:
         car.draw(screen)
     for car in car_ver_up:
         car.draw_ver(screen)
-    for car in cars and cars_ver:
-        car.check_coll()
-        break
+    for car in cars:
+        car.check_coll(cars_ver)
+
   
     
 
@@ -298,4 +298,3 @@ while run:
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
-
