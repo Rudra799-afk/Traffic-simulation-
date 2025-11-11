@@ -174,17 +174,55 @@ class Car:
         a=pygame.Rect(self.x-10, self.y-10, 60, 40)
         
         for hitbox in cars:
-            pygame.draw.rect(screen, GREEN, a)
+            pygame.draw.rect(screen, GRAY, a)
+        for hitbox in car_opp:
+            pygame.draw.rect(screen, GRAY, a)
+
     def draw_coll_ver(self):
         b=pygame.Rect(self.x-10, self.y-10, 40, 60)
-        for car in cars_ver:
-          pygame.draw.rect(screen, GREEN, b)
+        for hitbox in cars_ver:
+          pygame.draw.rect(screen, GRAY, b)
+    def draw_coll_ver_up(self):
+        c=pygame.Rect(self.x-10, self.y-10, 40, 60)
+        for hitbox in car_ver_up:
+          pygame.draw.rect(screen, GRAY, c)
+
     def check_coll(self,car_verr):
         a=pygame.Rect(self.x-10, self.y-10, 60, 40)
         for car in car_verr:
           b = pygame.Rect(car.x, car.y, 20, 40)  # vertical car hitbox
           if a.colliderect(b):
-            print("ok")
+            for car in cars:
+                self.x-=self.speed
+                break
+    def check_collhor_up(self,car_hor_up):
+        a=pygame.Rect(self.x-10, self.y-10, 60, 40)
+        for car in car_hor_up:
+          b = pygame.Rect(car.x, car.y, 20, 40)  # vertical car hitbox
+          if b.colliderect(a):
+            for car in car_ver_up:
+                self.y-=self.speed
+                break
+    def check_coll_opp(self,carss):
+         a=pygame.Rect(self.x-10, self.y-10, 60, 40)
+         for car in carss:
+          b = pygame.Rect(car.x, car.y, 20, 40)  # vertical car hitbox
+          if b.colliderect(a):
+            for car in car_ver_up:
+                self.y-=self.speed
+                break
+    def check_coll_opp_down(self,carss):
+         a=pygame.Rect(self.x-10, self.y-10, 60, 40)
+         for car in carss:
+          b = pygame.Rect(car.x, car.y, 20, 40)  # vertical car hitbox
+          if b.colliderect(a):
+            for car in car_ver_up:
+                self.y+=self.speed
+                break
+          
+
+
+
         
 
 light1 = TrafficLight(150, 270)
@@ -202,7 +240,7 @@ while run:
 
     timer+=1
     spawn_timer+=1
-    if  timer<120:
+    if  timer<60:
         light_color1=GREEN
     if 120<timer<240:
         light_color1=RED
@@ -277,8 +315,12 @@ while run:
         light.draw(screen)
     for car in cars :
         car.draw_coll()
+    for car in car_opp:
+        car.draw_coll()
     for car in cars_ver:
         car.draw_coll_ver()
+    for car in car_ver_up:
+        car.draw_coll_ver_up()
     for car in cars:
         car.draw(screen)
     for car in cars_ver:
@@ -289,6 +331,12 @@ while run:
         car.draw_ver(screen)
     for car in cars:
         car.check_coll(cars_ver)
+    for car in car_ver_up:
+        car.check_collhor_up(cars)
+    for car in car_ver_up:
+        car.check_coll_opp(car_opp)
+    for car in cars_ver:
+        car.check_coll_opp_down(car_opp)
 
   
     
